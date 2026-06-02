@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>The Richmond IQ — A Chestertons Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#F7F4FB;font-family:'DM Sans',sans-serif;color:#1E1A2E}
+#app{min-height:100dvh;max-width:460px;margin:0 auto;display:flex;flex-direction:column;position:relative}
+
+/*
+  CHESTERTONS BRAND — UPDATE TO EXACT BRAND COLOURS IF SUPPLIED
+  Primary purple:  #5C1F8A  (Chestertons vibrant purple — confirm with brand guidelines)
+  Light purple:    #F3EEFB
+  Dark text:       #1E1A2E
+  Background:      #F7F4FB
+*/
+
+/* ── HEADER BAR ── */
+.c-bar{background:#5C1F8A;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.c-wordmark{font-family:'DM Serif Display',serif;font-size:20px;color:#fff;letter-spacing:0.5px}
+.c-tag{font-size:9px;color:rgba(255,255,255,0.55);letter-spacing:1.5px;text-transform:uppercase;text-align:right;line-height:1.5}
+
+/* ── INTRO ── */
+#intro{min-height:100dvh;background:#fff;display:flex;flex-direction:column;animation:fadeIn 0.4s ease}
+.intro-hero{background:#5C1F8A;padding:32px 26px 40px;text-align:center;position:relative;overflow:hidden}
+.intro-hero::after{content:'';position:absolute;bottom:-32px;left:50%;transform:translateX(-50%);width:64px;height:64px;background:#fff;border-radius:50%}
+.intro-eyebrow{font-size:9.5px;color:rgba(255,255,255,0.55);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;font-weight:500}
+.intro-title{font-family:'DM Serif Display',serif;font-size:46px;color:#fff;line-height:1;margin-bottom:6px}
+.intro-title em{color:rgba(255,255,255,0.55);font-style:italic}
+.intro-sub{font-size:13px;color:rgba(255,255,255,0.6);letter-spacing:0.3px;margin-top:6px}
+.intro-body{flex:1;padding:42px 24px 24px;background:#fff}
+.intro-lead{font-size:15px;color:#1E1A2E;line-height:1.7;margin-bottom:22px;text-align:center}
+.intro-lead strong{color:#5C1F8A}
+.how-title{font-size:9px;color:#5C1F8A;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;margin-bottom:12px}
+.how-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.how-step{display:flex;align-items:flex-start;gap:12px}
+.step-dot{width:22px;height:22px;border-radius:50%;background:#5C1F8A;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;color:#556070;line-height:1.55}
+.step-text strong{color:#1E1A2E;font-weight:600}
+.prize-strip{background:#F3EEFB;border-left:3px solid #5C1F8A;border-radius:0 6px 6px 0;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;margin-bottom:20px}
+.prize-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.prize-text{font-size:12px;color:#556070;line-height:1.55}
+.prize-text strong{color:#5C1F8A;font-weight:600;display:block;font-size:13px;margin-bottom:1px}
+.start-btn{width:100%;padding:16px;background:#5C1F8A;color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:transform 0.1s,background 0.15s}
+.start-btn:active{transform:scale(0.97);background:#4A1870}
+.free-tag{text-align:center;color:#AAB4C0;font-size:11px;margin-top:10px}
+
+/* ── GAME ── */
+#game{min-height:100dvh;background:#F7F4FB;flex-direction:column;display:none}
+#gheader{background:#5C1F8A;padding:11px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.gh-wordmark{font-family:'DM Serif Display',serif;font-size:16px;color:#fff}
+.gh-sub{color:rgba(255,255,255,0.45);font-size:8px;letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.streak-label{color:rgba(255,255,255,0.45);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;text-align:right;margin-bottom:4px}
+#streak-dots{display:flex;gap:4px;justify-content:flex-end}
+.dot{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;transition:all 0.3s;flex-shrink:0}
+.dot.filled{background:#fff}
+#prog-wrap{height:3px;background:rgba(255,255,255,0.2);flex-shrink:0;background:#E0D8F0}
+#prog-bar{height:100%;background:#5C1F8A;transition:width 0.5s ease;width:0%}
+
+/* ── QUESTION ── */
+#q-area{flex:1;padding:13px;display:flex;flex-direction:column;gap:9px;overflow:auto}
+.q-counter{font-size:9px;color:#AAB4C0;letter-spacing:1.5px;text-transform:uppercase;text-align:center}
+.q-card{background:#fff;border-radius:12px;border:1px solid #EAE4F2;box-shadow:0 2px 8px rgba(92,31,138,0.06);overflow:hidden}
+.q-card-body{padding:20px 18px 14px}
+.q-cat-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.q-cat{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;color:#5C1F8A;background:#F3EEFB}
+.q-emoji{font-size:16px}
+.q-text{font-family:'DM Serif Display',serif;font-size:19px;color:#1E1A2E;line-height:1.45}
+.q-card-foot{background:#F9F7FC;border-top:1px solid #EAE4F2;padding:10px 18px;min-height:50px;display:flex;align-items:center}
+.q-fact-text{font-size:11.5px;color:#AAB4C0;line-height:1.55;font-style:italic;width:100%}
+.q-fact-text.correct{color:#2D7A4F}
+.q-fact-text.wrong{color:#B84040}
+
+/* ── OPTIONS ── */
+.options{display:flex;flex-direction:column;gap:7px}
+.opt-btn{background:#fff;border:1.5px solid #EAE4F2;border-radius:8px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1E1A2E;cursor:pointer;text-align:left;transition:all 0.15s;display:flex;align-items:center;gap:10px}
+.opt-btn:active{transform:scale(0.98)}
+.opt-btn:hover{border-color:#5C1F8A;background:#F9F7FC}
+.opt-label{width:22px;height:22px;border-radius:50%;background:#F3EEFB;color:#5C1F8A;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.opt-text{font-size:13.5px;color:#1E1A2E}
+.opt-btn.correct-ans{border-color:#5C1F8A;background:#F3EEFB}
+.opt-btn.correct-ans .opt-label{background:#5C1F8A;color:#fff}
+.opt-btn.wrong-ans{border-color:#C0392B;background:#FEF2F2}
+.opt-btn.wrong-ans .opt-label{background:#C0392B;color:#fff}
+.opt-btn.dim{opacity:0.4;pointer-events:none}
+
+/* ── ACTION ── */
+#action{padding:10px 13px 26px;flex-shrink:0;background:#F7F4FB}
+#result-strip{border-radius:8px;padding:12px 16px;animation:slideUp 0.3s ease;display:flex;align-items:center;gap:10px}
+.rs-icon{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rs-head{font-size:14px;font-weight:600;color:#fff}
+.rs-sub{font-size:11px;color:rgba(255,255,255,0.75);margin-top:1px}
+
+/* ── MODALS ── */
+.modal{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow-y:auto;animation:fadeIn 0.25s ease;padding:24px;background:rgba(92,31,138,0.15)}
+.modal-inner{width:100%;max-width:400px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(92,31,138,0.2);overflow:hidden}
+.modal-purple{background:#5C1F8A}
+.modal-btn{width:100%;padding:14px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:transform 0.1s}
+.modal-btn:active{transform:scale(0.97)}
+.btn-purple{background:#5C1F8A;color:#fff}
+.btn-light{background:#F3EEFB;color:#5C1F8A}
+.field{margin-bottom:11px}
+.field label{display:block;color:#AAB4C0;font-size:10px;font-weight:600;margin-bottom:5px;letter-spacing:0.5px;text-transform:uppercase}
+.field input{width:100%;padding:12px 13px;border-radius:8px;border:1.5px solid #EAE4F2;background:#fff;color:#1E1A2E;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.15s}
+.field input:focus{border-color:#5C1F8A}
+.field input::placeholder{color:#C5CFD8}
+.verify-circle{width:68px;height:68px;border-radius:50%;background:#5C1F8A;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;animation:pop 0.5s ease}
+.code-box{background:#F3EEFB;border:1.5px solid #5C1F8A;border-radius:8px;padding:14px 18px;text-align:center;margin-bottom:18px}
+.code-label{font-size:9px;color:#5C1F8A;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;font-weight:600}
+.code-value{font-family:'DM Sans',sans-serif;font-size:22px;font-weight:700;color:#5C1F8A;letter-spacing:4px}
+.address-box{background:#F3EEFB;border-radius:8px;padding:13px 16px;text-align:center;margin-bottom:18px;font-size:12px;color:#556070;line-height:1.65}
+.address-box strong{color:#1E1A2E;display:block;margin-bottom:3px;font-size:13px}
+
+/* ── CLAIMED SCREEN ── */
+#claimed-screen{min-height:100dvh;background:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center}
+
+/* ── ANIMS ── */
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{transform:scale(0.7);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ── CLAIMED / LOCKED ── -->
+<div id="claimed-screen">
+  <div class="c-bar" style="width:100%;position:absolute;top:0">
+    <div class="c-wordmark">Chestertons</div>
+    <div class="c-tag">Richmond<br>23a Friars Stile Road</div>
+  </div>
+  <div style="font-size:48px;margin-bottom:16px" id="cs-icon">🏡</div>
+  <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#5C1F8A;margin-bottom:8px" id="cs-title">Already Claimed</div>
+  <div style="font-size:13px;color:#556070;line-height:1.65;margin-bottom:20px" id="cs-msg"></div>
+  <div class="code-box" style="width:100%;max-width:280px;margin:0 auto 20px" id="cs-code-wrap">
+    <div class="code-label">Your Prize Code</div>
+    <div class="code-value" id="cs-code"></div>
+  </div>
+  <div style="font-size:11px;color:#C5CFD8">chestertons.co.uk/richmond</div>
+</div>
+
+<!-- ── INTRO ── -->
+<div id="intro">
+  <div class="c-bar">
+    <div class="c-wordmark">Chestertons</div>
+    <div class="c-tag">Centre Stage<br>Richmond 2026</div>
+  </div>
+  <div class="intro-hero">
+    <div class="intro-eyebrow">A Chestertons Richmond Challenge</div>
+    <div class="intro-title">The<br>Richmond<br><em>IQ</em></div>
+    <div class="intro-sub">How well do you know the place you love?</div>
+  </div>
+  <div class="intro-body">
+    <p class="intro-lead">Richmond is one of the most extraordinary places in Britain. From royal parks to rock legends — <strong>how well do you really know it?</strong></p>
+    <div class="how-title">How to play</div>
+    <div class="how-steps">
+      <div class="how-step"><div class="step-dot">1</div><div class="step-text">A question about Richmond appears — history, wildlife, culture, sport, famous residents. Choose from <strong>three answers</strong>.</div></div>
+      <div class="how-step"><div class="step-dot">2</div><div class="step-text">Get it right and your streak grows. Get it wrong and you start again.</div></div>
+      <div class="how-step"><div class="step-dot">3</div><div class="step-text">Hit <strong>5 in a row</strong> and you've earned your prize — register and claim it at the <strong>Chestertons stand</strong> or our office on Friars Stile Road. 3 attempts per day.</div></div>
+    </div>
+    <div class="prize-strip">
+      <div class="prize-icon">🎁</div>
+      <div class="prize-text"><strong>Win a Chestertons Prize</strong>5 correct answers in a row earns you a prize. Register your details and show your code at the Chestertons Centre Stage stand — or pop into our office at 23a Friars Stile Road, Richmond TW10 6NH.</div>
+    </div>
+    <button class="start-btn" onclick="startGame()">Test Your Richmond IQ →</button>
+    <div class="free-tag">Free to play · 3 attempts per day · Centre Stage Richmond 2026</div>
+  </div>
+</div>
+
+<!-- ── GAME ── -->
+<div id="game">
+  <div id="gheader">
+    <div><div class="gh-wordmark">The Richmond IQ</div><div class="gh-sub">Chestertons · Centre Stage 2026</div></div>
+    <div><div class="streak-label">Streak</div><div id="streak-dots"></div></div>
+  </div>
+  <div id="prog-wrap"><div id="prog-bar"></div></div>
+  <div id="q-area">
+    <div class="q-counter" id="q-counter">Question 1 of 25</div>
+    <div class="q-card">
+      <div class="q-card-body" id="q-body"></div>
+      <div class="q-card-foot"><div class="q-fact-text" id="q-fact">Choose your answer above...</div></div>
+    </div>
+    <div id="options-area" class="options"></div>
+  </div>
+  <div id="action"><div id="action-inner"></div></div>
+</div>
+
+</div>
+<script>
+const STREAK_TO_WIN=5, MAX_DAILY=3;
+const WIN_KEY='chestertons_richmond_iq_win', ATT_KEY='chestertons_richmond_iq_att';
+const PURPLE='#5C1F8A';
+
+const QUESTIONS=[
+  {q:"Richmond Park is how many times larger than Hyde Park?",opts:["Twice the size","Four times the size","Eight times the size"],ans:2,cat:"Parks & Nature",emoji:"🦌",
+   fact:"At 955 hectares, Richmond Park is London's largest Royal Park and eight times the size of Hyde Park — and it's entirely free to enter. Not bad for a commute to work."},
+  {q:"Approximately how many deer roam freely in Richmond Park?",opts:["Around 150","Around 630","Over 2,000"],ans:1,cat:"Parks & Nature",emoji:"🦌",
+   fact:"Around 630 Red and Fallow deer have roamed Richmond Park since Charles I enclosed it in 1637. Spotting a stag at dawn is one of London life's great privileges."},
+  {q:"Richmond Bridge — the oldest Thames bridge still in its original form — was built in which year?",opts:["1696","1777","1832"],ans:1,cat:"Local History",emoji:"🌉",
+   fact:"Built in 1777, Richmond Bridge is Grade I listed and one of the most painted bridges in Britain. It cost £26,000 — funded by a public lottery."},
+  {q:"Which monarch died at Richmond Palace in 1603, cementing the town's extraordinary royal history?",opts:["Henry VIII","Elizabeth I","Mary I"],ans:1,cat:"Local History",emoji:"👑",
+   fact:"Elizabeth I spent her final days at Richmond Palace. The town's royal connections go back centuries — and they continue to make it one of the most sought-after addresses in England."},
+  {q:"The Rolling Stones had a famous 1963 residency at which Richmond venue, launching their career?",opts:["The Crawdaddy Club","The Orange Tree","Richmond Town Hall"],ans:0,cat:"Famous Connections",emoji:"🎸",
+   fact:"The Crawdaddy Club at the Station Hotel in Richmond hosted the Stones' residency in 1963. Without Richmond, the history of rock music might look very different."},
+  {q:"Eel Pie Island in Twickenham was a legendary music venue. Which famous bands played there in the 1960s?",opts:["Only jazz acts","The Rolling Stones, The Who and The Yardbirds","The Beatles exclusively"],ans:1,cat:"Famous Connections",emoji:"🎵",
+   fact:"Eel Pie Island hosted the Stones, The Who, The Yardbirds and many more. It's one of rock history's best-kept secrets — sitting quietly in the Thames, minutes from Richmond."},
+  {q:"Kew Gardens was granted UNESCO World Heritage status in which year?",opts:["1987","2003","2014"],ans:1,cat:"Parks & Nature",emoji:"🌿",
+   fact:"Kew's World Heritage designation recognised both its extraordinary plant collections and its landscape design. For Richmond residents, one of the world's great scientific institutions is practically on the doorstep."},
+  {q:"Virginia Woolf and her husband Leonard founded what from their Richmond home in 1917?",opts:["The Hogarth Press","The Bloomsbury Group","The Richmond Literary Society"],ans:0,cat:"Famous Connections",emoji:"📚",
+   fact:"With a £19 printing press, the Woolfs established the Hogarth Press in Paradise Road, Richmond — eventually publishing T.S. Eliot, Katherine Mansfield and Sigmund Freud. Not a bad return on £19."},
+  {q:"Richmond Theatre is a much-loved Grade II listed Victorian theatre. When did it open?",opts:["1858","1899","1924"],ans:1,cat:"Arts & Culture",emoji:"🎭",
+   fact:"Richmond Theatre opened in 1899 and still attracts West End-quality productions. On a good week, you can see a world-class show without leaving the postcode."},
+  {q:"What is Twickenham Stadium's capacity — making it the world's largest dedicated rugby union ground?",opts:["62,500","82,000","97,000"],ans:1,cat:"Sport",emoji:"🏉",
+   fact:"With 82,000 seats, Twickenham is England's home of rugby — and practically on Richmond's doorstep. On match days, it brings the whole community together."},
+  {q:"Ham House in Richmond is described by the National Trust as one of what in Europe?",opts:["The best preserved 17th century houses","The largest Tudor estates","The finest Georgian gardens"],ans:0,cat:"Local History",emoji:"🏰",
+   fact:"Built in 1610 and managed by the National Trust, Ham House is one of Europe's finest 17th century houses. Its original furnishings have survived remarkably intact — it's a genuine time capsule."},
+  {q:"Approximately how long does it take to travel from Richmond station to London Waterloo by train?",opts:["12 minutes","19 minutes","34 minutes"],ans:1,cat:"Living in Richmond",emoji:"🚆",
+   fact:"Richmond to Waterloo in under 20 minutes — with the District line, London Overground and South Western Railway all serving the town. City life and green space, with nothing to give up."},
+  {q:"Petersham Meadows, minutes from Richmond town centre, is famous for what surprising sight?",opts:["Wild ponies grazing","Cattle grazing freely","Peacocks roaming"],ans:1,cat:"Parks & Nature",emoji:"🐄",
+   fact:"Cows graze on Petersham Meadows just minutes from the town centre — one of those wonderful surprises that makes Richmond feel like the countryside despite being 9 miles from Central London."},
+  {q:"The view from Richmond Hill is the only view in England protected by a special Act of Parliament. What can you see?",opts:["Kew Gardens to the east","A sweeping bend of the River Thames","Windsor Castle to the west"],ans:1,cat:"Local History",emoji:"🌅",
+   fact:"The panoramic sweep of the Thames from Richmond Hill has been painted by Turner and admired for centuries. Its legal protection is unique in England — nobody can build to spoil it."},
+  {q:"J.M.W. Turner was so captivated by Richmond that he painted the view from Richmond Hill multiple times. Which era was Turner from?",opts:["Georgian / early Victorian","Edwardian","Victorian / late Georgian"],ans:0,cat:"Arts & Culture",emoji:"🎨",
+   fact:"Turner painted Richmond Hill in the late 18th and early 19th centuries, drawn by that famous Thames panorama. Richmond has been inspiring artists for over 250 years."},
+  {q:"Richmond Park was enclosed by which monarch in 1637, controversially fencing off common land?",opts:["Henry VIII","Charles I","George III"],ans:1,cat:"Local History",emoji:"👑",
+   fact:"Charles I enclosed Richmond Park in 1637 to create a hunting ground. Locals fought back and won public access rights that still stand today — making it one of history's more successful community campaigns."},
+  {q:"The Orange Tree Theatre in Richmond holds a unique distinction in London. What is it?",opts:["London's only permanent theatre-in-the-round","London's oldest continuously running theatre","The only theatre owned by its audience"],ans:0,cat:"Arts & Culture",emoji:"🎭",
+   fact:"The Orange Tree is London's only permanent in-the-round theatre — every seat is close to the stage. It regularly produces some of the capital's most critically acclaimed work, right here in Richmond."},
+  {q:"Richmond upon Thames is geographically unique among London boroughs. Why?",opts:["It spans both banks of the River Thames","It is the largest borough by area","It has no underground stations"],ans:0,cat:"Living in Richmond",emoji:"🗺️",
+   fact:"The borough stretches across both banks of the Thames — Richmond and Twickenham to the south, Barnes and Mortlake to the north. This creates one of London's most varied and characterful communities."},
+  {q:"Richmond upon Thames consistently ranks in the top tier for GCSE and A-level results in London. Typically in the top:",opts:["Top 3 boroughs","Top 5 boroughs","Top 10 boroughs"],ans:0,cat:"Living in Richmond",emoji:"🎓",
+   fact:"Richmond upon Thames regularly ranks among London's top 3 boroughs for school results — one of many reasons families choose to put down roots here, and rarely leave."},
+  {q:"The annual RideLondon cycling event passes through which famous Richmond landmark, attracting 25,000+ riders?",opts:["Richmond town centre","Richmond Park","The Thames towpath"],ans:1,cat:"Sport",emoji:"🚴",
+   fact:"RideLondon — one of the world's great cycling events — passes through Richmond Park every year. Watching 25,000 cyclists stream through the park on a summer morning is one of the great free spectacles of London life."},
+  {q:"Approximately how many visitors does Kew Gardens attract each year?",opts:["800,000","2 million","5 million"],ans:1,cat:"Parks & Nature",emoji:"🌸",
+   fact:"Around 2 million visitors a year make Kew one of London's top attractions — and for Richmond residents, this world-famous destination is essentially your local garden."},
+  {q:"Chestertons estate agents was founded in which year — making it one of London's most established property firms?",opts:["1905","1805","1955"],ans:1,cat:"About Chestertons",emoji:"🏡",
+   fact:"Established in 1805 by Charles Chesterton, we've been helping people find their perfect home for over 220 years. Our Richmond office on Friars Stile Road combines that heritage with genuine local expertise."},
+  {q:"Richmond upon Thames has an approximate population of:",opts:["120,000","200,000","340,000"],ans:1,cat:"Living in Richmond",emoji:"🏘️",
+   fact:"Around 200,000 people call Richmond upon Thames home — across neighbourhoods from Barnes to Hampton, Kew to Twickenham. Each with its own character, all within one extraordinary borough."},
+  {q:"Richmond Park contains over 1,000 ancient oak trees. Approximately how old are the oldest of them?",opts:["Over 300 years old","Over 500 years old","Over 700 years old"],ans:2,cat:"Parks & Nature",emoji:"🌳",
+   fact:"Some of Richmond Park's ancient oaks are over 700 years old — pre-dating the park's creation. These veterans support an extraordinary range of rare invertebrates found nowhere else in London."},
+  {q:"Cricket has been played on Richmond Green since approximately which century, making it one of England's oldest cricket grounds?",opts:["16th century","17th century","18th century"],ans:1,cat:"Local History",emoji:"🏏",
+   fact:"Cricket on Richmond Green dates back to the 17th century — one of the oldest playing venues in England. The Green remains the heart of the community to this day, as it has for over 350 years."},
+];
+
+// ── ATTEMPT TRACKING ──
+function todayStr(){return new Date().toISOString().split('T')[0];}
+function getAtts(){try{const s=localStorage.getItem(ATT_KEY);if(!s)return{count:0,date:todayStr()};const d=JSON.parse(s);if(d.date!==todayStr())return{count:0,date:todayStr()};return d;}catch(e){return{count:0,date:todayStr()};}}
+function recFail(){const d=getAtts();d.count=(d.count||0)+1;try{localStorage.setItem(ATT_KEY,JSON.stringify(d));}catch(e){}return d.count;}
+function attLeft(){return Math.max(0,MAX_DAILY-getAtts().count);}
+function isDayLocked(){return getAtts().count>=MAX_DAILY;}
+function getWin(){try{const s=localStorage.getItem(WIN_KEY);return s?JSON.parse(s):null;}catch(e){return null;}}
+function saveWin(n,c){try{localStorage.setItem(WIN_KEY,JSON.stringify({name:n,code:c,date:todayStr()}));}catch(e){}}
+function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='RIQ-';for(let i=0;i<5;i++)s+=c[Math.floor(Math.random()*c.length)];return s;}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const win=getWin();
+  if(win){showCS(win.name,win.code,false);return;}
+  if(isDayLocked()){showCS('','',true);return;}
+  const att=getAtts();
+  if(att.count>0){
+    const left=MAX_DAILY-att.count;
+    const b=document.createElement('div');
+    b.style.cssText='background:#F3EEFB;color:#5C1F8A;text-align:center;padding:8px 16px;font-size:11px;border-bottom:1px solid #E0D8F0;font-weight:500';
+    b.textContent=`${left} prize attempt${left===1?'':'s'} remaining today`;
+    document.getElementById('intro').insertBefore(b,document.getElementById('intro').children[1]);
+  }
+});
+
+function showCS(name,code,locked){
+  document.getElementById('intro').style.display='none';
+  document.getElementById('game').style.display='none';
+  const scr=document.getElementById('claimed-screen');
+  scr.style.display='flex';
+  if(locked){
+    document.getElementById('cs-icon').textContent='🔒';
+    document.getElementById('cs-title').textContent='Come Back Tomorrow';
+    document.getElementById('cs-msg').textContent="You've used all 3 of today's attempts. The counter resets at midnight — good luck next time!";
+    document.getElementById('cs-code-wrap').style.display='none';
+  } else {
+    document.getElementById('cs-icon').textContent='🏡';
+    document.getElementById('cs-title').textContent='Prize Already Claimed';
+    document.getElementById('cs-msg').textContent=`This prize was claimed by ${name}. Each device can claim once.`;
+    document.getElementById('cs-code').textContent=code;
+  }
+}
+
+// ── GAME STATE ──
+let questions=[],idx=0,streak=0,phase='intro',selected=null,regName='',regEmail='',regPhone='';
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+
+function startGame(){
+  document.getElementById('intro').style.display='none';
+  document.getElementById('game').style.display='flex';
+  document.getElementById('game').style.flexDirection='column';
+  questions=shuffle([...QUESTIONS]);
+  idx=0;streak=0;phase='playing';selected=null;
+  renderQuestion();
+}
+
+function renderDots(){
+  const el=document.getElementById('streak-dots');el.innerHTML='';
+  for(let i=0;i<STREAK_TO_WIN;i++){
+    const d=document.createElement('div');d.className='dot'+(i<streak?' filled':'');
+    if(i<streak)d.innerHTML=`<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="${PURPLE}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    el.appendChild(d);
+  }
+}
+
+function renderQuestion(){
+  const q=questions[idx];selected=null;
+  document.getElementById('q-counter').textContent=`Question ${idx+1} of ${questions.length}`;
+  document.getElementById('prog-bar').style.width=(idx/questions.length*100)+'%';
+  renderDots();
+  document.getElementById('q-body').innerHTML=`
+    <div class="q-cat-row"><div class="q-cat">${q.cat}</div><div class="q-emoji">${q.emoji}</div></div>
+    <div class="q-text">${q.q}</div>`;
+  document.getElementById('q-fact').textContent='Choose your answer above...';
+  document.getElementById('q-fact').className='q-fact-text';
+  const labels=['A','B','C'];
+  document.getElementById('options-area').innerHTML=q.opts.map((o,i)=>`
+    <button class="opt-btn" id="opt-${i}" onclick="pickAns(${i})">
+      <div class="opt-label">${labels[i]}</div>
+      <div class="opt-text">${o}</div>
+    </button>`).join('');
+  document.getElementById('action-inner').innerHTML='';
+}
+
+function pickAns(i){
+  if(phase!=='playing'||selected!==null)return;
+  selected=i;const q=questions[idx];const ok=i===q.ans;phase='revealing';
+  [0,1,2].forEach(j=>{
+    const btn=document.getElementById(`opt-${j}`);
+    if(j===q.ans)btn.className='opt-btn correct-ans';
+    else if(j===i&&!ok)btn.className='opt-btn wrong-ans';
+    else btn.className='opt-btn dim';
+  });
+  const fe=document.getElementById('q-fact');
+  fe.textContent=(ok?'✓ Correct — ':'✗ Not quite — ')+q.fact;
+  fe.className='q-fact-text '+(ok?'correct':'wrong');
+  document.getElementById('action-inner').innerHTML=`
+    <div id="result-strip" style="background:${ok?PURPLE:'#C0392B'}">
+      <div class="rs-icon">${ok?`<svg width="14" height="11" viewBox="0 0 14 11" fill="none"><path d="M1 5.5L5 9.5L13 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`:`<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1L11 11M11 1L1 11" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>`}</div>
+      <div><div class="rs-head">${ok?'Correct! Streak continues.':'Not this time — try again!'}</div><div class="rs-sub">${q.opts[q.ans]} is the answer.</div></div>
+    </div>`;
+  setTimeout(()=>{
+    if(ok){streak++;if(streak>=STREAK_TO_WIN){phase='prize';showPrize();}else{idx++;phase='playing';renderQuestion();}}
+    else{phase='gameover';showGameOver();}
+  },2600);
+}
+
+function removeModal(){const o=document.getElementById('modal');if(o)o.remove();}
+
+function cHeader(){return`<div style="background:${PURPLE};padding:14px 20px;text-align:center">
+  <div style="font-family:'DM Serif Display',serif;font-size:18px;color:#fff">Chestertons</div>
+  <div style="font-size:8px;color:rgba(255,255,255,0.5);letter-spacing:2px;text-transform:uppercase;margin-top:2px">Richmond · Centre Stage 2026</div>
+</div>`;}
+
+function showGameOver(){
+  const fc=recFail();const locked=fc>=MAX_DAILY;
+  removeModal();
+  const m=document.createElement('div');m.id='modal';m.className='modal';
+  m.innerHTML=`<div class="modal-inner">${cHeader()}<div style="padding:24px;text-align:center">
+    <div style="font-size:48px;margin-bottom:12px">${locked?'🔒':'🏡'}</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#1E1A2E;margin-bottom:6px">${locked?'No More Attempts Today':'Not Quite!'}</div>
+    ${locked?`
+      <div style="color:#AAB4C0;font-size:13px;line-height:1.65;margin-bottom:10px">You've used all 3 of today's attempts. Come back tomorrow!</div>
+      <div style="background:#F3EEFB;border-radius:8px;padding:12px 14px;margin-bottom:22px;font-size:12px;color:#556070;line-height:1.6">
+        In the meantime, come and find us at the <strong style="color:#1E1A2E">Chestertons stand at Centre Stage</strong> — we'd love to chat about Richmond.
+      </div>
+      <div style="color:#DDE5EA;font-size:11px">chestertons.co.uk/richmond</div>`:`
+      <div style="color:#AAB4C0;font-size:13px;margin-bottom:6px">You reached a streak of</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:70px;color:${PURPLE};line-height:1;margin-bottom:6px">${streak}</div>
+      <div style="background:#F3EEFB;border-radius:6px;padding:8px 12px;margin-bottom:20px;font-size:12px;color:${PURPLE};font-weight:500">${attLeft()} prize attempt${attLeft()===1?'':'s'} remaining today</div>
+      <button class="modal-btn btn-purple" onclick="restart()" style="margin-bottom:8px">Try Again</button>
+      <button class="modal-btn btn-light" onclick="goIntro()" style="margin-top:8px">Back to start</button>`}
+  </div></div>`;
+  document.getElementById('app').appendChild(m);
+}
+
+function showPrize(){
+  removeModal();
+  const m=document.createElement('div');m.id='modal';m.className='modal';
+  m.innerHTML=`<div class="modal-inner">${cHeader()}<div style="padding:24px;text-align:center">
+    <div style="font-size:52px;margin-bottom:12px;animation:pop 0.5s ease">🏆</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:32px;color:${PURPLE};margin-bottom:6px">Brilliant!</div>
+    <div style="font-size:11px;font-weight:600;color:#AAB4C0;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px">5-Question Streak</div>
+    <div style="color:#556070;font-size:13px;line-height:1.7;margin-bottom:22px;max-width:280px;margin-left:auto;margin-right:auto">
+      You clearly know your Richmond. Register below to generate your unique prize code — then claim at our stand <strong style="color:#1E1A2E">or at our office on Friars Stile Road</strong>.
+    </div>
+    <div style="background:#FFF8F0;border:1px solid #F0D8B8;border-radius:6px;padding:10px 14px;margin-bottom:18px;font-size:11px;color:#A07040;line-height:1.55">
+      ℹ️ One prize per device. Your code will be saved here.
+    </div>
+    <button class="modal-btn btn-purple" onclick="showRegister()" style="margin-bottom:10px">Generate My Prize Code →</button>
+    <div onclick="restart()" style="color:#DDE5EA;font-size:12px;cursor:pointer;margin-top:6px">Skip &amp; play again (forfeits prize)</div>
+  </div></div>`;
+  document.getElementById('app').appendChild(m);
+}
+
+function showRegister(){
+  removeModal();
+  const m=document.createElement('div');m.id='modal';m.className='modal';
+  m.innerHTML=`<div class="modal-inner">${cHeader()}<div style="padding:24px">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-family:'DM Serif Display',serif;font-size:24px;color:#1E1A2E;margin-bottom:3px">Claim Your Prize</div>
+      <div style="color:#AAB4C0;font-size:12px">Register to generate your unique prize code</div>
+    </div>
+    <div class="field"><label>Full Name *</label><input id="r-name" type="text" placeholder="Your name" oninput="regName=this.value;checkReg()"></div>
+    <div class="field"><label>Email Address *</label><input id="r-email" type="email" placeholder="your@email.com" oninput="regEmail=this.value;checkReg()"></div>
+    <div class="field" style="margin-bottom:16px"><label>Mobile Number</label><input id="r-phone" type="tel" placeholder="+44 7700 000000" oninput="regPhone=this.value"></div>
+    <div style="color:#C5CFD8;font-size:10px;text-align:center;margin-bottom:14px;line-height:1.6">By registering you agree to be contacted by Chestertons. Your data is kept secure and never shared with third parties.</div>
+    <button id="reg-btn" class="modal-btn btn-purple" onclick="submitReg()" style="opacity:0.3;pointer-events:none">Generate Prize Code →</button>
+  </div></div>`;
+  document.getElementById('app').appendChild(m);
+}
+
+function checkReg(){
+  const btn=document.getElementById('reg-btn');
+  if(btn){const ok=regName.trim()&&regEmail.includes('@');btn.style.opacity=ok?'1':'0.3';btn.style.pointerEvents=ok?'auto':'none';}
+}
+
+function submitReg(){
+  if(!regName.trim()||!regEmail.includes('@'))return;
+  const code=genCode();saveWin(regName.trim(),code);
+  removeModal();
+  const m=document.createElement('div');m.id='modal';m.className='modal';
+  m.innerHTML=`<div class="modal-inner">${cHeader()}<div style="padding:24px;text-align:center">
+    <div class="verify-circle"><svg width="30" height="24" viewBox="0 0 30 24" fill="none"><path d="M2 13L10 21L28 2" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div style="font-family:'DM Serif Display',serif;font-size:26px;color:#1E1A2E;margin-bottom:5px">Winner!</div>
+    <div style="color:${PURPLE};font-size:17px;font-weight:600;margin-bottom:3px">${regName.trim()}</div>
+    <div style="color:#AAB4C0;font-size:12px;margin-bottom:20px">The Richmond IQ · 5-Streak · Centre Stage 2026</div>
+    <div class="code-box"><div class="code-label">Your Unique Prize Code</div><div class="code-value">${code}</div></div>
+    <div class="address-box">
+      <strong>Claim Your Prize Here</strong>
+      Show this screen and code at the <strong>Chestertons stand at Centre Stage</strong><br>or visit us at<br>
+      <strong>23a Friars Stile Road, Richmond TW10 6NH</strong>
+    </div>
+    <div onclick="restart()" style="color:#DDE5EA;font-size:12px;cursor:pointer">Play again</div>
+  </div></div>`;
+  document.getElementById('app').appendChild(m);
+}
+
+function restart(){
+  removeModal();
+  if(isDayLocked()){showCS('','',true);return;}
+  questions=shuffle([...QUESTIONS]);
+  idx=0;streak=0;phase='playing';selected=null;
+  regName='';regEmail='';regPhone='';
+  renderQuestion();
+}
+
+function goIntro(){
+  removeModal();
+  document.getElementById('game').style.display='none';
+  document.getElementById('intro').style.display='flex';
+}
+</script>
+</body>
+</html>
